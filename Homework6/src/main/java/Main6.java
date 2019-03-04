@@ -1,8 +1,18 @@
+import java.util.ArrayList;
+import java.util.Random;
+
 public class Main6 {
 
     public static void main(String[] args) {
         Tree<Integer> tree = new TreeImpl<>();
-        tree.add(60);
+
+
+        ArrayList<TreeImpl<Integer>> treeList = new ArrayList<>();
+
+        addTreeCycle(treeList, 20, 15);
+
+
+      /*  tree.add(60);
         tree.add(25);
         tree.add(66);
         tree.add(15);
@@ -22,6 +32,20 @@ public class Main6 {
 
         tree.remove(15);
         tree.display();
+*/
 
+    }
+
+    protected static  void addTreeCycle (ArrayList<TreeImpl<Integer>> list, int count, int treeElements){
+        Random random = new Random();
+        random.nextInt(200);
+
+        for (int i = 0; i < count ; i++) {
+            list.add(new TreeImpl<Integer>());
+            for (int j = 0; j <  treeElements; j++) {
+                list.get(i).add(random.nextInt(200)-100);
+            }
+            list.get(i).display();
+        }
     }
 }

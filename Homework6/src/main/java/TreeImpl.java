@@ -10,6 +10,8 @@ public class TreeImpl<E extends Comparable<? super E>> implements Tree<E> {
         Node<E> newNode = new Node<>(value);
         if (isEmpty()) {
             rootNode = newNode;
+            rootNode.setLevel(1);
+            System.out.println(rootNode.getLevel() + " level");
             return;
         }
 
@@ -21,17 +23,29 @@ public class TreeImpl<E extends Comparable<? super E>> implements Tree<E> {
                 return;
             }
 
-            if (current.shouldLeftChild(value)) {
-                current = current.getLeftChild();
+            if (current.shouldLeftChild(value)) {   //проверяем меньше текущего значения или нет
+                current = current.getLeftChild();   //присваеваем ссылку лефтЧайлд
+
+
             } else {
                 current = current.getRightChild();
+
+
             }
         }
 
-        if (previous.shouldLeftChild(value)) {
+        if (previous.shouldLeftChild(value) && previous.getLevel()<4) {
             previous.setLeftChild(newNode);
-        } else {
+            if(previous.getLeftChild()!=null){
+                previous.getLeftChild().setLevel(previous.getLevel()+1);
+           // System.out.println(previous.getLeftChild().getLevel() + " Level " + value + " value");
+            }
+        } else if (previous.getLevel()<4){
             previous.setRightChild(newNode);
+            if(previous.getRightChild()!=null){
+                previous.getRightChild().setLevel(previous.getLevel()+1);
+               // System.out.println(previous.getRightChild().getLevel() + " Level " + value + " value");
+            }
         }
     }
 

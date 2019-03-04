@@ -17,4 +17,6 @@ public interface Tree<E extends Comparable<? super E>> {
     boolean isEmpty();
 
     void traverse(TraverseMode traverseMode);
+
+
 }
