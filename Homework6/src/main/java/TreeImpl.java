@@ -4,7 +4,7 @@ public class TreeImpl<E extends Comparable<? super E>> implements Tree<E> {
 
     private Node<E> rootNode;
 
-
+//6786
     @Override
     public void add(E value) {
         Node<E> newNode = new Node<>(value);
