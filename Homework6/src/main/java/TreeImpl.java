@@ -3,6 +3,9 @@ import java.util.Stack;
 public class TreeImpl<E extends Comparable<? super E>> implements Tree<E> {
 
     private Node<E> rootNode;
+    private int maxleftLevel =0;
+    private int maxrightLevel = 0;
+
 
 //6786
     @Override
@@ -36,15 +39,21 @@ public class TreeImpl<E extends Comparable<? super E>> implements Tree<E> {
 
         if (previous.shouldLeftChild(value) && previous.getLevel()<4) {
             previous.setLeftChild(newNode);
+            if (previous.getLeftChild()==null){
+                System.out.println("pusto");
+            }
             if(previous.getLeftChild()!=null){
+
                 previous.getLeftChild().setLevel(previous.getLevel()+1);
-           // System.out.println(previous.getLeftChild().getLevel() + " Level " + value + " value");
+
+            System.out.println(previous.getLeftChild().getLevel() + " Level " + value + " value");
             }
         } else if (previous.getLevel()<4){
             previous.setRightChild(newNode);
             if(previous.getRightChild()!=null){
                 previous.getRightChild().setLevel(previous.getLevel()+1);
-               // System.out.println(previous.getRightChild().getLevel() + " Level " + value + " value");
+
+                System.out.println(previous.getRightChild().getLevel() + " Level " + value + " value");
             }
         }
     }
@@ -217,6 +226,7 @@ public class TreeImpl<E extends Comparable<? super E>> implements Tree<E> {
 
     @Override
     public void traverse(TraverseMode traverseMode) {
+
         switch (traverseMode) {
             case IN_ORDER:
                 inOrder(rootNode);
@@ -242,11 +252,15 @@ public class TreeImpl<E extends Comparable<? super E>> implements Tree<E> {
     }
 
     private void preOrder(Node<E> node) {
+
+
         if (node == null)
             return;
 
         System.out.println(node);
+
         preOrder(node.getLeftChild());
+
         preOrder(node.getRightChild());
     }
 
@@ -258,4 +272,23 @@ public class TreeImpl<E extends Comparable<? super E>> implements Tree<E> {
         postOrder(node.getRightChild());
         System.out.println(node);
     }
+
+
+
+    public Node<E> getRootNode() {
+        return rootNode;
+    }
+
+    public static   boolean isBalanced(Node node) {
+
+            return (node == null) ||
+                    isBalanced(node.getLeftChild()) &&
+                            isBalanced(node.getRightChild()) &&
+                            Math.abs(height(node.getLeftChild()) - height(node.getRightChild())) <= 1;
+        }
+
+        private static int height(Node node) {
+            return node == null ? 0 : 1 + Math.max(height(node.getLeftChild()), height(node.getRightChild()));
+        }
+
 }
