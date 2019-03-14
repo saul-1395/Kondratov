@@ -169,15 +169,13 @@ public class Graph {
     public Stack<String> findShortPathViaBfs(String startLabel, String finishLabel) {
         int startIndex  = indexOf(startLabel);
         int finishIndex = indexOf(finishLabel);
-        if (startIndex == -1) {
-            throw new IllegalArgumentException("Invalid startLabel: " + startLabel);
-        }
-        if (finishIndex == -1) {
-            throw new IllegalArgumentException("Invalid finishLabel: " + finishLabel);
+        if (startIndex == -1 || finishIndex == -1) {
+
+            throw new IllegalArgumentException("Invalid label" );
         }
 
         Queue<Vertex> queue = new ArrayDeque();
-
+        Stack<String> stack = new Stack();
         Vertex vertex = vertices.get(startIndex);
         visitVertex(queue, vertex);
 
@@ -190,7 +188,12 @@ public class Graph {
                 visitVertex(queue, vertex);
                 vertex.setPreviousVertex(queue.peek());
                 if (vertex.getLabel().equals(finishLabel)) {
-                    return buildPath(vertex);
+                    Vertex previous = vertex;
+                    while (previous != null){
+                        stack.push(previous.getLabel());
+                        previous = previous.getPreviousVertex(); //обращаемся к предыдущей вершине
+                    }
+                    return stack;
                 }
             }
         }
@@ -199,14 +202,5 @@ public class Graph {
         return null;
     }
 
-    private Stack<String> buildPath(Vertex vertex) {
-        Stack<String> stack = new Stack();
-        Vertex current = vertex;
-        while (current != null) {
-            stack.push(current.getLabel());
-            current = current.getPreviousVertex();
-        }
 
-        return stack;
-    }
 }
