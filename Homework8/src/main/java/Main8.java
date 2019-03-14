@@ -7,7 +7,7 @@ public class Main8 {
 //        Integer price = priceByName.get("Хлеб");
 
 //        HashTable hashTable = new HashTableImpl(5);
-        HashTable hashTable = new DoubleHashTableImpl(5);
+     /*   HashTable hashTable = new DoubleHashTableImpl(5);
         hashTable.put(new Item(1,  "Orange"), 150);
         hashTable.put(new Item(77, "Banana"), 100);
         hashTable.put(new Item(62, "Lemon"), 250);
@@ -22,5 +22,14 @@ public class Main8 {
 
         hashTable.remove(new Item(77, "Banana"));
         System.out.println("Cost Banana is " + hashTable.get(new Item(77, "Banana")));
+    */
+        HashTableLinkImpl tableLink = new HashTableLinkImpl(5);
+        tableLink.put(new Item(1,  "Orange"), 15);
+        tableLink.put(new Item(77, "Banana"), 100);
+        tableLink.put(new Item(62, "Lemon"), 250);
+        tableLink.put(new Item(21, "Potato"), 67);
+        tableLink.put(new Item(55, "Milk"), 120);
+        tableLink.display();
+
     }
 }

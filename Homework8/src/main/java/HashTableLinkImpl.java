@@ -1,3 +1,5 @@
+import java.util.LinkedList;
+
 public class HashTableLinkImpl  implements HashTable {
     public static final int INVALID_INDEX = -1;
     public static final Integer INVALID_COST = null;
@@ -22,12 +24,12 @@ public class HashTableLinkImpl  implements HashTable {
     }
 
 
-    private HashTableLinkImpl.Entry[] data;
+    private LinkedList<Entry>[] data;
     private int size;
     private int maxSize;
 
     public HashTableLinkImpl(int maxSize) {
-        this.data = new HashTableLinkImpl.Entry[maxSize * 2];
+        this.data = new LinkedList [maxSize * 2];
         this.maxSize = maxSize;
     }
 
@@ -42,12 +44,12 @@ public class HashTableLinkImpl  implements HashTable {
         }
 
         int index = hashFunc(item.hashCode());
-        while (data[index] != null) {
-            index += getStep(item.hashCode());
-            index %= data.length;
+        if (data[index] == null) {
+            data[index] = new LinkedList<>();
+            data[index].add(data[index].size(), new Entry(item, cost));
+        }else {
+            data[index].add(data[index].size(), new Entry(item, cost));
         }
-
-        data[index] = new HashTableLinkImpl.Entry(item, cost);
         size++;
 
         return true;
@@ -55,31 +57,40 @@ public class HashTableLinkImpl  implements HashTable {
 
     @Override
     public Integer get(Item item) {
+        int valueT = 0;
         int index = indexOf(item);
         if (index == INVALID_INDEX) {
             return INVALID_COST;
-        } else {
-            return data[index].value;
         }
 
-//        return index == INVALID_INDEX ? INVALID_COST : data[index].value;
+        for (int i = 0; i < data[index].size() ; i++) {
+                if(data[index].get(i).key.equals(item.getTitle())){
+                    valueT = data[index].get(i).value;
+                }
+                valueT =  INVALID_COST;
+
+        }
+
+        return valueT; //пришлось содать переменную т.к. ругалась идея на отсутствие ретон
     }
+
+//        return index == INVALID_INDEX ? INVALID_COST : data[index].value;
+
 
     private int indexOf(Item item) {
         int index = hashFunc(item.hashCode());
 
         int count = 0;
         while (data[index] != null) {
-            if (data[index].key.equals(item)) {
-                return index;
+            for (int i = 0; i <data[index].size() ; i++) {
+                if (data[index].get(i).key.equals(item)){
+                    return index;
+                }
             }
 
             if (count > data.length) {
                 return -1;
             }
-
-            index += getStep(item.hashCode());
-            index %= data.length;
 
             count++;
         }
@@ -112,12 +123,18 @@ public class HashTableLinkImpl  implements HashTable {
     public void display() {
         System.out.println("-----------");
         for (int i = 0; i < data.length; i++) {
-            System.out.println(String.format("%d = [%s]", i, data[i]));
+            if (data[i] != null) {
+
+
+                    System.out.println(String.format("%d = [%s]", i, data[i].toString()));
+
+
+            } else {
+                System.out.println("-");
+            }
         }
         System.out.println("-----------");
     }
 
-    protected int getStep(int key) {
-        return 1;
-    }
+
 }
